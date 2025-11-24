@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import { model, Schema } from "mongoose";
 import type { User } from "../interfaces/user.interface.js";
 
-const userSchema = new Schema({ 
+const userSchema = new Schema({
     name: {
         type: 'string',
         required: true,
@@ -21,6 +21,11 @@ const userSchema = new Schema({
         type: 'string',
         required: true,
     },
+    tokenVersion: {
+        type: Number,
+        default: 0
+    }
+
 });
 
 userSchema.pre('save', async function () {

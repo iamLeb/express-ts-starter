@@ -2,6 +2,8 @@ import express from 'express';
 import { PORT } from './configs/index.js';
 import type { Route } from './interfaces/route.interface.js';
 import { DatabaseConfig } from './configs/db.config.js';
+import { ErrorMiddleware } from './middlewares/error.middleware.js';
+import cookieParser from 'cookie-parser';
 
 export class App {
     public app: express.Application
@@ -21,6 +23,7 @@ export class App {
     private initializeMiddlewares() {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(cookieParser());
     }
 
     private initializeRoutes(routes: Route[]) {
@@ -28,7 +31,7 @@ export class App {
     }
 
     private initializeErrorHandling() {
-       
+        this.app.use(ErrorMiddleware.handleError);
     }
 
     public listen = () => {

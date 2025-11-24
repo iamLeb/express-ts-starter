@@ -1,5 +1,7 @@
 import express from 'express';
 import { AuthController } from '../controllers/auth.controller.js';
+import { authMiddleware } from '../middlewares/auth.middleware.js';
+import { LoginLimiter } from '../utils/loginLimiter.js';
 
 export class AuthRoute {
     public path = '/auth';
@@ -11,7 +13,9 @@ export class AuthRoute {
     }
 
     private initializeRoutes() {
-        this.router.post(`${this.path}/login`, this.authController.login);
+        this.router.post(`${this.path}/login`, LoginLimiter, this.authController.login);
         this.router.post(`${this.path}/register`, this.authController.register);
+        this.router.get(`${this.path}/check`, authMiddleware, this.authController.check);
+        this.router.post(`${this.path}/logout`, authMiddleware, this.authController.logout);
     }
 }
