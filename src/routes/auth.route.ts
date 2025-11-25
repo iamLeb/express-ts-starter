@@ -17,5 +17,9 @@ export class AuthRoute {
         this.router.post(`${this.path}/register`, this.authController.register);
         this.router.get(`${this.path}/check`, authMiddleware, this.authController.check);
         this.router.post(`${this.path}/logout`, authMiddleware, this.authController.logout);
+
+        // Password reset and email verification routes can be added here in the future
+        this.router.post(`${this.path}/forgot-password`, LoginLimiter, this.authController.forgotPassword);
+        this.router.post(`${this.path}/reset-password`, this.authController.resetPassword);
     }
 }

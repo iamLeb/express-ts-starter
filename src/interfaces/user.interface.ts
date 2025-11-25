@@ -7,6 +7,8 @@ export interface User {
     phone: string;
     password: string;
     tokenVersion: number;
+    passwordResetToken?: string;
+    passwordResetExpires?: Date;
 }
 
 export interface TokenData {

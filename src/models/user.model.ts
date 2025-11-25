@@ -24,6 +24,14 @@ const userSchema = new Schema({
     tokenVersion: {
         type: Number,
         default: 0
+    },
+    passwordResetToken: {
+        type: String,
+        required: false,
+    },
+    passwordResetExpires: {
+        type: Date,
+        required: false,
     }
 
 });
