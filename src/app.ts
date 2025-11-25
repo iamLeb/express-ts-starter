@@ -1,9 +1,10 @@
 import express from 'express';
-import { PORT } from './configs/index.js';
+import { ORIGIN, PORT } from './configs/index.js';
 import type { Route } from './interfaces/route.interface.js';
 import { DatabaseConfig } from './configs/db.config.js';
 import { ErrorMiddleware } from './middlewares/error.middleware.js';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 export class App {
     public app: express.Application
@@ -24,6 +25,10 @@ export class App {
         this.app.use(cookieParser());
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(cors({
+            origin: ORIGIN?.split(',') || '',
+            credentials: true
+        }));
     }
 
     private initializeRoutes(routes: Route[]) {
