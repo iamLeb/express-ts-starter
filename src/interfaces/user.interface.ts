@@ -5,7 +5,7 @@ export interface User {
     name: string;
     email: string;
     phone: string;
-    // password: string;
+    password: string;
     tokenVersion: number;
 }
 
@@ -17,3 +17,5 @@ export interface TokenData {
 export interface RequestWithUser extends Request {
     user?: User;
 }
+
+export interface TokenVersion { _id: string, tokenVersion: number }

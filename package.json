@@ -4,11 +4,9 @@
   "description": "",
   "main": "./dist/server.js",
   "scripts": {
-    "clean": "rm -rf dist",
-    "build": "npm run clean && tsc",
-    "watch": "npm run clean && tsc -w",
-    "start": "nodemon dist/server.js",
-    "dev": "concurrently \"npm run watch\" \"npm run start\""
+    "build": "rm -rf dist && tsc",
+    "dev": "nodemon --watch src --ext ts --exec \"npm run build && node dist/server.js\"",
+    "start": "node dist/server.js"
   },
   "keywords": [],
   "author": "",

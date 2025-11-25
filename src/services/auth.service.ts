@@ -7,14 +7,8 @@ import { APP_ENV, JWT_SECRET } from "../configs/index.js";
 
 const createToken = (user: User): TokenData => {
     const expiresIn = 30 * 24 * 60 * 60; // 30 days in seconds
-    const token: TokenData = { expiresIn, token: jwt.sign({ _id: user._id, tokenVersion: user.tokenVersion }, JWT_SECRET as string, { expiresIn: '30d' })};
+    const token: TokenData = { expiresIn, token: jwt.sign({ _id: user._id, tokenVersion: user.tokenVersion }, JWT_SECRET as string, { expiresIn: '30d' }) };
     return token;
-}
-
-const createCookie = (token: TokenData): string => {
-    const isProduction = APP_ENV === 'production';
-    let cookie = `Authorization=${token.token}; HttpOnly; Max-Age=${token.expiresIn};`;
-    return isProduction ? cookie + ' Secure; SameSite=None' : cookie + ' SameSite=Lax';
 }
 
 export class AuthService {
@@ -28,7 +22,7 @@ export class AuthService {
         }
     }
 
-    public loginUser = async (userData: User): Promise<{user: User, token: TokenData, cookie: string}> => {
+    public loginUser = async (userData: User): Promise<{ user: User, token: TokenData }> => {
         // Logic to authenticate a user
         const { email, password } = userData;
         try {
@@ -42,9 +36,9 @@ export class AuthService {
 
             // create token 
             const token = createToken(existUser);
-            const cookie = createCookie(token);
+            // const cookie = createCookie(token);
 
-            return { user: existUser, token, cookie };
+            return { user: existUser, token };
         } catch (error) {
             throw new HttpException(500, `${error}`);
         }

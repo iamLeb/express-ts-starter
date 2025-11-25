@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import { AuthService } from "../services/auth.service.js";
 import type { RequestWithUser, User } from "../interfaces/user.interface.js";
+import { APP_ENV } from "../configs/index.js";
 
 export class AuthController {
     private readonly authService = new AuthService();
@@ -19,10 +20,15 @@ export class AuthController {
     public login = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const userData: User = req.body;
-            const { user, token, cookie } = await this.authService.loginUser(userData);
+            const { user, token } = await this.authService.loginUser(userData);
             // Set cookie in response header
-            res.setHeader('Set-Cookie', cookie);
-            res.status(200).json({ data: { user, token, cookie }, message: 'User logged in successfully' });
+            res.cookie('Authorization', token.token, { 
+                httpOnly: true, 
+                maxAge: token.expiresIn * 1000, 
+                secure: APP_ENV === 'production', 
+                sameSite: 'lax' 
+            });
+            res.status(200).json({ data: { user, token }, message: 'User logged in successfully' });
         } catch (error) {
             next(error);
         }
