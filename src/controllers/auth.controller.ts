@@ -3,6 +3,7 @@ import { AuthService } from "../services/auth.service.js";
 import type { RequestWithUser, User } from "../interfaces/user.interface.js";
 import { APP_ENV } from "../configs/index.js";
 import { MailService } from "../services/mail.service.js";
+import type { CreateUserDto } from "../dtos/user.dto.js";
 
 export class AuthController {
     private readonly authService = new AuthService();
@@ -10,7 +11,7 @@ export class AuthController {
 
     public register = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const userData: User = req.body;
+            const userData: CreateUserDto = req.body;
             const user: User = await this.authService.createUser(userData);
 
             res.status(201).json({ data: user, message: 'User registered successfully' });
@@ -21,7 +22,7 @@ export class AuthController {
 
     public login = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const userData: User = req.body;
+            const userData: CreateUserDto = req.body;
             const { user, token } = await this.authService.loginUser(userData);
             // Set cookie in response header
             res.cookie('Authorization', token.token, { 

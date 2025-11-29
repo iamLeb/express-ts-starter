@@ -5,6 +5,7 @@ import { UserModel } from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import { APP_ENV, JWT_SECRET } from "../configs/index.js";
 import crypto from "crypto";
+import type { CreateUserDto } from "../dtos/user.dto.js";
 
 const createToken = (user: User): TokenData => {
     const expiresIn = 30 * 24 * 60 * 60; // 30 days in seconds
@@ -13,7 +14,7 @@ const createToken = (user: User): TokenData => {
 }
 
 export class AuthService {
-    public createUser = async (userData: User): Promise<User> => {
+    public createUser = async (userData: CreateUserDto): Promise<User> => {
         // Logic to create a user
         try {
             const user: User = await UserModel.create(userData);
@@ -23,7 +24,7 @@ export class AuthService {
         }
     }
 
-    public loginUser = async (userData: User): Promise<{ user: User, token: TokenData }> => {
+    public loginUser = async (userData: CreateUserDto): Promise<{ user: User, token: TokenData }> => {
         // Logic to authenticate a user
         const { email, password } = userData;
         try {

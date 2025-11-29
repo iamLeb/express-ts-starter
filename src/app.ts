@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import express from 'express';
 import { ORIGIN, PORT } from './configs/index.js';
 import type { Route } from './interfaces/route.interface.js';
